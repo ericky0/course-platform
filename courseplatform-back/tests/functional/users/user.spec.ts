@@ -113,4 +113,13 @@ test.group('User', async (group) => {
 
     assert.isTrue(await Hash.verify(user.password, updatedPassword))
   })
+
+  test('it should be able to get the logged in user', async ({ client }) => {
+    const user = await UserFactory.create()
+
+    const response = await client.get('/users').loginAs(user)
+
+    response.assertStatus(200)
+    response.assertBodyContains({ id: user.id })
+  })
 })

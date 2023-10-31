@@ -6,6 +6,8 @@
  */
 
 import Bouncer from '@ioc:Adonis/Addons/Bouncer'
+import Attachment from 'App/Models/Attachment'
+import Course from 'App/Models/Course'
 import User from 'App/Models/User'
 
 /*
@@ -33,6 +35,21 @@ import User from 'App/Models/User'
 export const { actions } = Bouncer.define('updateUser', (user: User, updatedUser: User) => {
   return user.id === updatedUser.id
 })
+  .define('updateCourse', (user: User, updatedCourse: Course) => {
+    return user.id === updatedCourse.userId
+  })
+  .define('destroyCourse', (user: User, deletedCourse: Course) => {
+    return user.id === deletedCourse.userId
+  })
+  .define('publishCourse', (user: User, publishedCourse: Course) => {
+    return user.id === publishedCourse.userId
+  })
+  .define('updateAttachment', (user: User, course: Course, updatedAttachment: Attachment) => {
+    return user.id === course.userId && course.id === updatedAttachment.courseId
+  })
+  .define('destroyAttachment', (user: User, course: Course, deletedAttachment: Attachment) => {
+    return user.id === course.userId && course.id === deletedAttachment.courseId
+  })
 
 /*
 |--------------------------------------------------------------------------

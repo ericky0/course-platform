@@ -5,6 +5,16 @@ import CreateUserValidator from 'App/Validators/CreateUserValidator'
 import UpdateUserValidator from 'App/Validators/UpdateUserValidator'
 
 export default class UsersController {
+  public async authenticatedUser({ response, auth }: HttpContextContract) {
+    const user = auth.user
+
+    if (!user) {
+      throw new BadRequestException('User is not logged in, please login first.', 401)
+    }
+
+    return response.ok(user)
+  }
+
   public async store({ request, response }: HttpContextContract) {
     const userPayload = await request.validate(CreateUserValidator)
 
