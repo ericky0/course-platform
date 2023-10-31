@@ -1,16 +1,60 @@
+import * as z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Icons } from '@/components/icons'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useSignInModal } from '@/hooks/useSignInModal'
-import Modal from '../ui/modal'
 import { useSignUpModal } from '@/hooks/useSignUpModal'
+import Modal from '../ui/modal'
+
+
+const formSchema = z.object({
+  email: z.string().email({
+    message: 'Email must be valid.'
+  }),
+  name: z.string().min(3, {
+    message: 'Name must have at least 3 characters.'
+  }),
+  password: z.string().min(6, {
+    message: 'Password must have at least 6 characters.'
+  })
+})
 
 
 const SignUpModal = () => {
 
   const signUpModal = useSignUpModal()
+  const router = useRouter()
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    }
+  })
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const response = await signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false
+    })
+
+    if (response?.error) {
+      console.log(response)
+      return
+    }
+    
+    router.refresh()
+
+  }
 
   return (
     <Modal isOpen={signUpModal.isOpen} onClose={signUpModal.onClose}>
