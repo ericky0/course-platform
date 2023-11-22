@@ -37,18 +37,6 @@ test.group('User', async (group) => {
     response.assertStatus(409)
   })
 
-  test('it should return 409 when name is already in use', async ({ client }) => {
-    const { name } = await UserFactory.create()
-
-    const response = await client.post('/users').json({
-      email: 'testing@example.com',
-      name,
-      password: 'testing',
-    })
-
-    response.assertStatus(409)
-  })
-
   test('it should return 422 when required data is not provided', async ({ client }) => {
     const response = await client.post('users').json({})
     response.assertStatus(422)

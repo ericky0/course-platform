@@ -24,7 +24,9 @@
     "@adonisjs/core",
     "@adonisjs/lucid",
     "@adonisjs/bouncer",
-    "@adonisjs/auth"
+    "@adonisjs/auth",
+    "@adonisjs/ally",
+    "@adonisjs/session"
   ],
   "aceProviders": [
     "@adonisjs/repl"

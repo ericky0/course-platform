@@ -17,12 +17,10 @@ export default class UsersController {
 
   public async store({ request, response }: HttpContextContract) {
     const userPayload = await request.validate(CreateUserValidator)
-
-    const usernameAlreadyExists = await User.findBy('name', userPayload.name)
     const emailAlreadyExists = await User.findBy('email', userPayload.email)
 
-    if (usernameAlreadyExists || emailAlreadyExists) {
-      throw new BadRequestException('username or e-mail already exists', 409)
+    if (emailAlreadyExists) {
+      throw new BadRequestException('e-mail already exists', 409)
     }
 
     const user = await User.create(userPayload)

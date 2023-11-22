@@ -27,7 +27,10 @@ Route.patch('/users/:id', 'UsersController.update').middleware('auth')
 
 //auth
 Route.post('/auth', 'AuthController.store')
+Route.get('/auth/session', 'AuthController.session').middleware('auth')
 Route.delete('/auth', 'AuthController.destroy')
+Route.get('/auth/github', 'AuthController.redirect')
+Route.get('/auth/github/callback', 'AuthController.callback')
 
 // categories
 Route.post('/category', 'CategoriesController.store')

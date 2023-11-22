@@ -1,17 +1,20 @@
+'use client';
+
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import api from '@/services/api'
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Icons } from '@/components/icons'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { useSignInModal } from '@/hooks/useSignInModal'
 import { useSignUpModal } from '@/hooks/useSignUpModal'
 import Modal from '../ui/modal'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { AxiosError } from 'axios'
 
 
 const formSchema = z.object({
@@ -28,7 +31,6 @@ const formSchema = z.object({
 
 
 const SignUpModal = () => {
-
   const signUpModal = useSignUpModal()
   const router = useRouter()
 
@@ -36,24 +38,30 @@ const SignUpModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
+      name: '',
       password: '',
     }
   })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await signIn('credentials', {
-      email: values.email,
-      password: values.password,
-      redirect: false
-    })
-
-    if (response?.error) {
-      console.log(response)
-      return
+    try {
+      await api.post('/users', {
+        email: values.email,
+        name: values.name,
+        password: values.password,
+      }).then(async() => {
+        await api.post('/auth', {
+          email: values.email,
+          password: values.password,
+        })
+      })
+      toast.success('Account created successfully.')
+      signUpModal.onClose()
+      router.refresh()
+    } catch (e) {
+      const error = e as AxiosError
+      console.log(error.message)
     }
-    
-    router.refresh()
-
   }
 
   return (
@@ -65,43 +73,77 @@ const SignUpModal = () => {
           Enter your email below to create your account
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
-        <div className="grid grid-cols-2 gap-6">
-          <Button variant="outline">
-            <Icons.gitHub className="mr-2 h-4 w-4" />
-            Github
-          </Button>
-          <Button variant="outline">
-            <Icons.google className="mr-2 h-4 w-4" />
-            Google
-          </Button>
-        </div>
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="name">Name</Label>
-          <Input id="name" type="text" placeholder="Erick Hogarth" />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password"/>
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button className="w-full">Create account</Button>
-      </CardFooter>
+      <Form { ...form }>
+        <form onSubmit={form.handleSubmit(onSubmit)}> 
+          <CardContent className="grid gap-4">
+            <div className="grid grid-cols-2 gap-6">
+              <Button variant="outline" onClick={() => router.push('http://localhost:3333/auth/github')} type='button'>
+                <Icons.gitHub className="mr-2 h-4 w-4" />
+                Github
+              </Button>
+              <Button variant="outline" type='button'>
+                <Icons.google className="mr-2 h-4 w-4" />
+                Google
+              </Button>
+            </div>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem className="grid">
+                  <FormLabel htmlFor="name" className='mb-2'>Name</FormLabel>
+                  <FormControl>
+                    <Input id="name" type="text" placeholder="Erick Hogarth" {...field}/>
+                  </FormControl>
+                  <FormDescription>
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem className="grid gap-2 mt-4">
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <FormControl>
+                    <Input id="email" type="email" placeholder="m@example.com"  {...field}/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='password'
+              render={({ field }) => (
+                <FormItem className="grid gap-2">
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <FormControl>
+                    <Input id="password" type="password" {...field}/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full" type='submit'>Create account</Button>
+          </CardFooter>
+        </form>
+      </Form>
     </Card>
   </Modal>
   )
