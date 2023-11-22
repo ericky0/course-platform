@@ -8,20 +8,13 @@ import { useEffect, useState } from "react";
 import { UserResponse } from "@/types/UserResponse";
 import api from "@/services/api";
 import { useRouter } from "next/navigation";
+import { useSessionStore } from "@/hooks/useSession";
 
 
 const AvatarSettings = () => {
 
-  const [ apiUser, setUser ] = useState<UserResponse['user']>(null)
+  const { loggedUser, deleteUser } = useSessionStore()
   const router = useRouter()
-
-  useEffect(() => {
-    (async () => {
-      const { user } = await getClientSession()
-      setUser(user)
-    })()
-
-  }, [])
 
   return (
     <>
@@ -33,8 +26,8 @@ const AvatarSettings = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>
-            <p className="font-normal dark:text-slate-300">{apiUser?.name}</p>
-            <p className="font-light text-slate-400">{apiUser?.email}</p>
+            <p className="font-normal dark:text-slate-300">{loggedUser?.name}</p>
+            <p className="font-light text-slate-400">{loggedUser?.email}</p>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex gap-2">
@@ -43,6 +36,7 @@ const AvatarSettings = () => {
           </DropdownMenuItem>
           <DropdownMenuItem className="flex gap-2" onClick={async () => {
             await api.delete('/auth')
+            deleteUser()
             router.refresh()
           }}>
             <LogOut size={18} />

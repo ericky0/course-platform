@@ -15,6 +15,7 @@ import { useSignUpModal } from '@/hooks/useSignUpModal'
 import Modal from '../ui/modal'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { AxiosError } from 'axios'
+import { useSessionStore } from '@/hooks/useSession';
 
 
 const formSchema = z.object({
@@ -29,10 +30,10 @@ const formSchema = z.object({
   })
 })
 
-
 const SignUpModal = () => {
   const signUpModal = useSignUpModal()
   const router = useRouter()
+  const { setUser } = useSessionStore()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,10 +50,12 @@ const SignUpModal = () => {
         email: values.email,
         name: values.name,
         password: values.password,
-      }).then(async() => {
+      }).then(async () => {
         await api.post('/auth', {
           email: values.email,
           password: values.password,
+        }).then(() => {
+          setUser()
         })
       })
       toast.success('Account created successfully.')

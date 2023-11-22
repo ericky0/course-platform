@@ -13,6 +13,7 @@ import { useSignInModal } from '@/hooks/useSignInModal'
 import Modal from '../ui/modal'
 import api from '@/services/api'
 import { AxiosError } from 'axios'
+import { useSessionStore } from '@/hooks/useSession'
 
 const formSchema = z.object({
   email: z.string().email({
@@ -26,6 +27,7 @@ const formSchema = z.object({
 const SignInModal = () => {
   const signInModal = useSignInModal()
   const router = useRouter()
+  const { setUser } = useSessionStore()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,14 +40,12 @@ const SignInModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
     try {
-      const response = await api.post('/auth', {
+      await api.post('/auth', {
         email: values.email,
         password: values.password,
+      }).then(() => {
+        setUser()
       })
-      if (response.status !== 201) {
-        console.log(response.status)
-        return
-      }
       signInModal.onClose()
       router.refresh()
     } catch (e) {

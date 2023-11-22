@@ -1,13 +1,7 @@
 import { AxiosError } from "axios"
+import { User } from "./User"
 
 export interface UserResponse {
-    user: {
-        id: string
-        name: string
-        email: string
-        avatar: string
-        created_at: string
-        updated_at: string
-    } | null,
+    user: User | null,
     error: AxiosError | null
 }
