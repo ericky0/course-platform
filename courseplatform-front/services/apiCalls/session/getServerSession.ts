@@ -1,7 +1,8 @@
-import cookieStore from "@/hooks/getCookies";
-import api from "@/services/api";
-import { UserResponse } from "@/types/UserResponse";
 import { AxiosError } from "axios";
+
+import { UserResponse } from "@/types/UserResponse";
+import api from "@/services/api";
+import cookieStore from "@/hooks/getCookies";
 
 
 export async function getServerSession(): Promise<UserResponse> {

@@ -1,9 +1,8 @@
 'use client'
-
+import { AxiosError } from "axios";
 
 import api from "@/services/api";
 import { UserResponse } from "@/types/UserResponse";
-import { AxiosError } from "axios";
 
 
 export async function getClientSession(): Promise<UserResponse> {

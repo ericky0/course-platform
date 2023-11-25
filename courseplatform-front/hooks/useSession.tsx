@@ -1,6 +1,7 @@
+import { create } from 'zustand'
+
 import { getClientSession } from '@/services/apiCalls/session/getClientSession';
 import { User } from '@/types/User';
-import { create } from 'zustand'
 
 interface useSessionStore {
   loggedUser: User | null,

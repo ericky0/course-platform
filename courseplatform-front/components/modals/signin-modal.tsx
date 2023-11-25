@@ -1,5 +1,6 @@
 
 import * as z from 'zod'
+import { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,9 +12,8 @@ import { Icons } from '@/components/icons'
 import { Input } from '@/components/ui/input'
 import { useSignInModal } from '@/hooks/useSignInModal'
 import Modal from '../ui/modal'
-import api from '@/services/api'
-import { AxiosError } from 'axios'
 import { useSessionStore } from '@/hooks/useSession'
+import api from '@/services/api'
 
 const formSchema = z.object({
   email: z.string().email({

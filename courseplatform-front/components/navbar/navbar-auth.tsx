@@ -1,8 +1,8 @@
 "use client"
 
 import { useSignInModal } from "@/hooks/useSignInModal"
-import { Button } from "../ui/button"
 import { useSignUpModal } from "@/hooks/useSignUpModal"
+import { Button } from "../ui/button"
 
 const NavbarAuth = () => {
 
