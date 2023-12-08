@@ -19,8 +19,8 @@ test.group('Auth', async (group) => {
         email,
       },
     })
-    // response.assertStatus(201)
-    response.assertStatus(404)
+    response.assertStatus(201)
+    // response.assertStatus(404)
   })
 
   test('it should return 400 when credentials are invalid', async ({ client }) => {
