@@ -10,6 +10,7 @@ export default class AttachmentsController {
     const attachmentId = request.param('id')
 
     console.log('teste')
+    console.log('teste dois')
     const attachments = await this.filters(courseId, attachmentId)
     return response.ok(attachments)
   }
