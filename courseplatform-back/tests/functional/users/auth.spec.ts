@@ -20,6 +20,8 @@ test.group('Auth', async (group) => {
       },
     })
     // response.assertStatus(201)
+    // response.assertStatus(201)
+    // response.assertStatus(201)
     response.assertStatus(404)
   })
 
