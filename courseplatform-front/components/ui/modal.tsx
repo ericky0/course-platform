@@ -1,6 +1,12 @@
-"use client"
+'use client'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from './dialog'
 
 interface ModalProps {
   title?: string
@@ -10,7 +16,13 @@ interface ModalProps {
   children?: React.ReactNode
 }
 
-const Modal = ({ title, description, isOpen, onClose, children }: ModalProps) => {
+const Modal = ({
+  title,
+  description,
+  isOpen,
+  onClose,
+  children,
+}: ModalProps) => {
   const onChange = (open: boolean) => {
     if (!open) {
       onClose()
@@ -22,13 +34,9 @@ const Modal = ({ title, description, isOpen, onClose, children }: ModalProps) =>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>
-            {description}
-          </DialogDescription>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <div>
-          {children}
-        </div>
+        <div>{children}</div>
       </DialogContent>
     </Dialog>
   )
