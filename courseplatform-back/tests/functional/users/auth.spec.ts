@@ -26,8 +26,8 @@ test.group('Auth', async (group) => {
     const { email } = await UserFactory.create()
 
     const response = await client.post('/auth').json({ email, password: '12321312' })
-    // response.assertStatus(400)
-    response.assertStatus(201)
+    response.assertStatus(400)
+    // response.assertStatus(201)
   })
 
   test('it should return 200 when user signs out', async ({ client }) => {
