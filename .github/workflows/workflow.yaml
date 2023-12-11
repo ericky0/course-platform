@@ -18,6 +18,7 @@ jobs:
         
       - name: Set up environment variables
         run: |
+          cd courseplatform-back
           echo "APP_KEY=${{ secrets.APP_KEY }}" > .env
           echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> .env
           echo "DRIVE_DISK=${{ secrets.DRIVE_DISK }}" >> .env
@@ -31,7 +32,7 @@ jobs:
           echo "SESSION_DRIVER=${{ secrets.SESSION_DRIVER }}" >> .env
 
       - name: Debug environment variables
-        run: cat .env
+        run: cat courseplatform-back/.env
 
       - name: run install, build and test
         run: |
