@@ -3,4 +3,8 @@ build
 coverage
 .vscode
 .DS_STORE
-tmp
+.env
+.env.test
+datafiles/databases/*.db
+datafiles/databases/*.db-journal
+datafiles/databases/*.zip
