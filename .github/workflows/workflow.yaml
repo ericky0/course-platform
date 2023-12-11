@@ -15,6 +15,22 @@ jobs:
         uses: actions/setup-node@v2
         with: 
           node-version: 20.x
+        
+      - name: Set up environment variables
+        run: |
+          echo "APP_KEY=${{ secrets.APP_KEY_SECRET }}" > .env
+          echo "DB_CONNECTION=${{ secrets.DB_CONNECTION_SECRET }}" >> .env
+          echo "DRIVE_DISK=${{ secrets.DRIVE_DISK_SECRET }}" >> .env
+          echo "HOST=${{ secrets.HOST_SECRET }}" >> .env
+          echo "PG_DB_NAME=${{ secrets.PG_DB_NAME_SECRET }}" >> .env
+          echo "PG_HOST=${{ secrets.PG_HOST_SECRET }}" >> .env
+          echo "PG_PASSWORD=${{ secrets.PG_PASSWORD_SECRET }}" >> .env
+          echo "PG_PORT=${{ secrets.PG_PORT_SECRET }}" >> .env
+          echo "PG_USER=${{ secrets.PG_USER_SECRET }}" >> .env
+          echo "PORT=${{ secrets.PORT_SECRET }}" >> .env
+          echo "SESSION_DRIVER=${{ secrets.SESSION_DRIVER_SECRET }}" >> .env
+          # Adicione outras variáveis de ambiente conforme necessário
+
       - name: run install, build and test
         run: |
           cd courseplatform-back
