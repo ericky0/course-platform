@@ -24,14 +24,17 @@ jobs:
         with: 
           node-version: ${{ matrix.node-version }}
 
-      - name: change folder
-        run: cd courseplatform-back
-
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: |
+        cd courseplatform-back
+        yarn --frozen-lockfile
 
       - name: Run all tests
-        run: yarn test
+        run: |
+        cd courseplatform-back
+        yarn test
 
       - name: Run build
-        run: yarn build --ignore-ts-errors
+        run: |
+        cd courseplatform-back
+        yarn build --ignore-ts-errors
