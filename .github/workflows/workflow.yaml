@@ -1,41 +1,24 @@
-name: Continuous Integration
-
 on: 
   pull_request:
     branches:
       ['*']
   push: 
     branches: 
-      ['master']
+      ['*']
 
 jobs: 
-  build: 
+  continuous-integration: 
     runs-on: ubuntu-latest
-    strategy:
-      matrix: 
-        node-version: ['20.x']
     environment: test
-    
-    steps:
+    steps: 
       - uses: actions/checkout@v3
-      - run: git fetch --prune --unshallow
-        
-      - name: Using Node.js ${{ matrix.node-version }}
+      - name: Using Node.js
         uses: actions/setup-node@v2
         with: 
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
+          node-version: 20.x
+      - name: run install, build and test
         run: |
           cd courseplatform-back
-          yarn --frozen-lockfile
-
-      - name: Run all tests
-        run: |
-          cd courseplatform-back
-          yarn test
-
-      - name: Run build
-        run: |
-          cd courseplatform-back
-          yarn build --ignore-ts-errors
+          npm install
+          npm run build
+          npm run test
