@@ -30,6 +30,9 @@ jobs:
           echo "PORT=${{ secrets.PORT }}" >> .env
           echo "SESSION_DRIVER=${{ secrets.SESSION_DRIVER }}" >> .env
 
+      - name: Debug environment variables
+        run: cat .env
+
       - name: run install, build and test
         run: |
           cd courseplatform-back
