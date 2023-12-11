@@ -25,7 +25,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: change folder
-        run: cd courseplatform-back
+        run: |
+        ls
+        cd courseplatform-back
+        ls
 
       - name: Install dependencies
         run: yarn --frozen-lockfile
