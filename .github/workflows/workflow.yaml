@@ -26,6 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          echo "${{ vars.APP_KEY }}"
           cd courseplatform-back
           yarn --frozen-lockfile
 
