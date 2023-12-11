@@ -31,7 +31,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Run all tests
-        run: node ace test
+        run: yarn test
 
       - name: Run build
         run: yarn build --ignore-ts-errors
