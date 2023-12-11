@@ -14,9 +14,7 @@ jobs:
     strategy:
       matrix: 
         node-version: ['20.x']
-    environment: 
-      name: workflow .env
-
+        
     steps:
       - uses: actions/checkout@v3
       - run: git fetch --prune --unshallow
