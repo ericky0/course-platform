@@ -9,7 +9,6 @@ on:
 jobs: 
   continuous-integration: 
     runs-on: ubuntu-latest
-    environment: test
     steps: 
       - uses: actions/checkout@v3
       - name: Using Node.js
